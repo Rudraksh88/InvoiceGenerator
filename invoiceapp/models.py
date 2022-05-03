@@ -15,8 +15,9 @@ class Invoice(models.Model):
         verbose_name = 'Invoice'
         verbose_name_plural = 'Invoices'
 
+
 class Items(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete = models.CASCADE)
+    invoice = models.ForeignKey(Invoice, on_delete = models.CASCADE, related_name='invoice')
     item_name = models.CharField(max_length = 200, null = False)
     item_quantity = models.IntegerField()
     item_price = models.IntegerField()
