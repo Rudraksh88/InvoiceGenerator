@@ -6,7 +6,7 @@ class ItemsInline(admin.TabularInline):
 
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = ['invoice_id', 'customer_name', 'invoice_date']
-    readonly_fields = ['invoice_date']
+    readonly_fields = ['invoice_date', 'invoice_id']
     search_fields = ['invoice_id', 'customer_name', 'invoice_date']
     inlines = [ItemsInline]
 

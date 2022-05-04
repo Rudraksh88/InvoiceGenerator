@@ -1,9 +1,14 @@
+from email import generator
 from django.shortcuts import render
 from .models import Invoice, Items
+from rest_framework import generics
+from .serializers import InvoiceSerializer
 
 # Create your views here.
 def HomeView(request):
     invoiceslist = Invoice.objects.all()
+    invoice_exist = True
+    if len(list(invoiceslist)) == 0: invoice_exist = False
     itemslist = {}
     itemstotal = {}
     for invoice in invoiceslist:
@@ -18,7 +23,8 @@ def HomeView(request):
     context = {
         'invoiceslist':invoiceslist,
         'itemslist': itemslist,
-        'itemstotal': itemstotal
+        'itemstotal': itemstotal,
+        'invoice_exist': invoice_exist
     }
 
     print(context['invoiceslist'])
@@ -51,3 +57,11 @@ def InvoiceView(request, pk):
 
     print(context['customer_name'])
     return render(request, 'invoice.html', context)
+
+class InvoiceList(generics.ListCreateAPIView):
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
+
+class InvoiceDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Items.objects.all()
+    serializer_class = InvoiceSerializer

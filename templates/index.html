@@ -14,7 +14,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>Invoice Generator</title>
     <!-- CSS files -->
     <link href="{% static 'css/tabler.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/tabler-flags.min.css' %}" rel="stylesheet"/>
@@ -31,10 +31,10 @@
           </button>
           <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
             <a href="/">
-              <img src="{% static 'logo.svg' %}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+              <img src="{% static 'disecto.svg' %}" width="110" height="32" alt="Disecto.com" class="navbar-brand-image">
             </a>
           </h1>
-          <div class="navbar-nav flex-row order-md-last">
+          {% comment %} <div class="navbar-nav flex-row order-md-last">
             
             <div class="nav-item dropdown">
               <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
@@ -46,7 +46,7 @@
               </a>
               
             </div>
-          </div>
+          </div> {% endcomment %}
         </div>
       </header>
       
@@ -94,6 +94,7 @@
                     <h3 class="card-title">Invoices</h3>
                   </div>
                   
+                  {% if invoice_exist %}
                   <div class="table-responsive">
                     <table class="table card-table table-vcenter text-nowrap datatable">
                       <thead>
@@ -105,10 +106,11 @@
                           <th>Total</th>
                         </tr>
                       </thead>
+                      
                       <tbody>
                         {% for invoice in invoiceslist %}
                         <tr>
-                          <td><span class="text-muted">{{ invoice.invoice_id | upper }}</span></td>
+                          <td><a href="{% url 'invoice' pk=invoice.invoice_id %}" class="text-reset" tabindex="-1">{{ invoice.invoice_id | upper }}</a></td>
                           <td><a href="{% url 'invoice' pk=invoice.invoice_id %}" class="text-reset" tabindex="-1">{{ invoice.customer_name }}</a></td>
                           <td>
                             {{ invoice.customer_phone }}
@@ -116,6 +118,7 @@
                           <td>
                             {{ invoice.invoice_date }}
                           </td>
+                          {% comment %} {% if %} {% endcomment %}
                           <td>$ {{ itemstotal | key:invoice.invoice_id }}
                           </td>
                           
@@ -123,6 +126,12 @@
                         {% endfor %}
                         
                       </tbody>
+                      {% else %} 
+                      <div class="card-header text-muted">
+                        <h2>Create an invoice to get started</h2>
+                      </div>
+
+                      {% endif %}
                     </table>
                   </div>
                   
@@ -134,7 +143,7 @@
         <footer class="footer footer-transparent d-print-none">
           <div class="container-xl">
             <div class="row text-center align-items-center flex-row-reverse">
-              <div class="col-lg-auto ms-lg-auto">
+              {% comment %} <div class="col-lg-auto ms-lg-auto">
                 <ul class="list-inline list-inline-dots mb-0">
                   <li class="list-inline-item"><a href="./docs/index.html" class="link-secondary">Documentation</a></li>
                   <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a></li>
@@ -147,19 +156,18 @@
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> {% endcomment %}
               <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
                   <li class="list-inline-item">
-                    Copyright &copy; 2022
-                    <a href="." class="link-secondary">Tabler</a>.
-                    All rights reserved.
+                    Made using open-source admin panel - 
+                    <a href="http://tabler.io" class="link-secondary"><b>Tabler </b></a>
                   </li>
-                  <li class="list-inline-item">
+                  {% comment %} <li class="list-inline-item">
                     <a href="./changelog.html" class="link-secondary" rel="noopener">
                       v1.0.0-beta5
                     </a>
-                  </li>
+                  </li> {% endcomment %}
                 </ul>
               </div>
             </div>
