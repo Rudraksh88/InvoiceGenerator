@@ -19,6 +19,6 @@ from invoiceapp.views import HomeView, InvoiceView
 
 urlpatterns = [
     path('', HomeView),
-    path('invoice/', InvoiceView),
+    path('invoice/<str:pk>', InvoiceView, name='invoice'),
     path('admin/', admin.site.urls),
 ]
