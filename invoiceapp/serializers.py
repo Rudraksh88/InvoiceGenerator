@@ -3,6 +3,7 @@ from .models import Invoice, Items
 from rest_framework import serializers
 
 class ItemSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Items
         fields = [
@@ -19,7 +20,7 @@ class ItemSerializer(serializers.ModelSerializer):
         # }
 
 class InvoiceSerializer(serializers.ModelSerializer):
-    # items = serializers.SerializerMethodField()
+    items = ItemSerializer(many=True, read_only=True)
 
     # def get_items(self, Items):
     #     return [ItemSerializer(s).data for s in Items.objects.filter(invoice = self.invoice_id)]
@@ -32,7 +33,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
             'customer_address',
             'invoice_id',
             'invoice_date',
-            # 'items'
+            'items'
         ]
         extra_kwargs = {
             'invoice_date': {"required": False},

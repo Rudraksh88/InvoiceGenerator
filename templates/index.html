@@ -119,7 +119,7 @@
                             {{ invoice.invoice_date }}
                           </td>
                           {% comment %} {% if %} {% endcomment %}
-                          <td>$ {{ itemstotal | key:invoice.invoice_id }}
+                          {% comment %} <td>$ {{ itemstotal | key:invoice.invoice_id }} {% endcomment %}
                           </td>
                           
                         </tr>

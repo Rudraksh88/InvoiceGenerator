@@ -9,7 +9,7 @@ class Invoice(models.Model):
     invoice_date = models.DateField(auto_now_add=True, verbose_name='Invoice Date')
 
     def __str__(self):
-        return self.customer_name + ' - ' +str(self.invoice_id)
+        return self.customer_name + ' - ' + str(self.invoice_id)
     
     class Meta:
         verbose_name = 'Invoice'
