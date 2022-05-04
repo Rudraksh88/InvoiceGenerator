@@ -11,9 +11,14 @@ class Invoice(models.Model):
     def __str__(self):
         return self.customer_name + ' - ' +str(self.invoice_id)
     
+    def __iter__(self):
+        for field in self._meta.fields:
+            yield (field.verbose_name, field.value_to_string(self))
+    
     class Meta:
         verbose_name = 'Invoice'
         verbose_name_plural = 'Invoices'
+
 
 
 class Items(models.Model):

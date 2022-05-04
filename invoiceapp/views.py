@@ -3,7 +3,11 @@ from .models import Invoice, Items
 
 # Create your views here.
 def HomeView(request):
-    return render(request, 'index.html')
+    invoiceslist = Invoice.objects.all()
+    context = {
+        'invoiceslist':invoiceslist
+    }
+    return render(request, 'index.html', context)
 
 def InvoiceView(request):
     return render(request, 'invoice.html')
