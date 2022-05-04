@@ -1,4 +1,5 @@
 {% load static %}
+{% load dictfilter %}
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
@@ -1461,48 +1462,30 @@
                     <table class="table card-table table-vcenter text-nowrap datatable">
                       <thead>
                         <tr>
-                          <th>Client</th>
-                          <th>VAT No.</th>
-                          <th>Created</th>
-                          <th>Status</th>
-                          <th>Price</th>
-                          <th></th>
+                          <th>Invoice ID</th>
+                          <th>Customer Name</th>
+                          <th>Customer Phone</th>
+                          <th>Invoice Date</th>
+                          <th>Total</th>
                         </tr>
                       </thead>
                       <tbody>
+                        {% for invoice in invoiceslist %}
                         <tr>
-                          <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
-                          <td><span class="text-muted">001401</span></td>
-                          <td><a href="invoice.html" class="text-reset" tabindex="-1">Design Works</a></td>
+                          <td><span class="text-muted">{{ invoice.invoice_id | upper }}</span></td>
+                          <td><a href="invoice.html" class="text-reset" tabindex="-1">{{ invoice.customer_name }}</a></td>
                           <td>
-                            <span class="flag flag-country-us"></span>
-                            Carlson Limited
+                            {{ invoice.customer_phone }}
                           </td>
                           <td>
-                            87956621
+                            {{ invoice.invoice_date }}
                           </td>
-                          <td>
-                            15 Dec 2017
+                          <td>$ {{ itemstotal | key:invoice.invoice_id }}
                           </td>
-                          <td>
-                            <span class="badge bg-success me-1"></span> Paid
-                          </td>
-                          <td>$887</td>
-                          <td class="text-end">
-                            <span class="dropdown">
-                              <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions</button>
-                              <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#">
-                                  Action
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                  Another action
-                                </a>
-                              </div>
-                            </span>
-                          </td>
+                          
                         </tr>
-                        <tr>
+                        {% endfor %}
+                        {% comment %} <tr>
                           <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
                           <td><span class="text-muted">001402</span></td>
                           <td><a href="invoice.html" class="text-reset" tabindex="-1">UX Wireframes</a></td>
@@ -1725,7 +1708,7 @@
                               </div>
                             </span>
                           </td>
-                        </tr>
+                        </tr> {% endcomment %}
                       </tbody>
                     </table>
                   </div>
