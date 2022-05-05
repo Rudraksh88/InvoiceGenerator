@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'invoiceapp.apps.InvoiceappConfig',
     'rest_framework',
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'invoiceproject.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

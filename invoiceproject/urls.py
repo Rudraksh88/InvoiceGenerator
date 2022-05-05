@@ -16,14 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from invoiceapp.views import CreateInvoice, HomeView, InvoiceView, InvoiceList, ParticularInvoice, UpdateInvoice
+schema_view = get_swagger_view(title='Pastebin API')
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 urlpatterns = [
     path('', HomeView),
     path('invoice/<str:pk>', InvoiceView, name='invoice'),
     path('admin/', admin.site.urls),
     path('api/', InvoiceList),
-    # path('api/<str:pk>', InvoiceDetail)
-    path('api/<str:pk>', ParticularInvoice),
-    path('api-create', CreateInvoice),
-    path('api/update/<str:pk>/<str:name>/', UpdateInvoice),
+    path('api/<str:pk>/', ParticularInvoice),
+    path('api-create/', CreateInvoice),
+    path('api-update/<str:pk>/<str:name>/', UpdateInvoice),
+    path('schema/')
 ]

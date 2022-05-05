@@ -1,4 +1,3 @@
-from calendar import setfirstweekday
 from email import generator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -75,7 +74,7 @@ def CreateInvoice(request):
     serializer_class = InvoiceCreateSerializer(data = request.data)
     if serializer_class.is_valid():
          serializer_class.save()
-    return Response("serializer_class.data")
+    return Response("Invoice Created")
 
 @api_view(['PUT'])
 def UpdateInvoice(request, pk, name):
