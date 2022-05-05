@@ -5,7 +5,7 @@ from .models import Invoice, Items
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import InvoiceSerializer, ItemSerializer, InvoiceDetailSerializer
+from .serializers import InvoiceSerializer, ItemSerializer, InvoiceDetailSerializer, InvoiceListSerializer
 
 # Create your views here.
 def HomeView(request):
@@ -29,10 +29,7 @@ def HomeView(request):
         'itemstotal': itemstotal,
         'invoice_exist': invoice_exist
     }
-
-    print(context['invoiceslist'])
-    print(context['itemslist'])
-    print(context['itemstotal'])
+    
     return render(request, 'index.html', context)
 
 def InvoiceView(request, pk):
@@ -58,28 +55,26 @@ def InvoiceView(request, pk):
         'itemdetails': itemdetails
     }
 
-    print(context['customer_name'])
     return render(request, 'invoice.html', context)
 
 @api_view(['GET',])
 def InvoiceList(request):
     if request.method == 'GET':
         queryset = Invoice.objects.all()
-        serializer_class = InvoiceSerializer(queryset, many=True)
+        serializer_class = InvoiceListSerializer(queryset, many=True)
         return Response(serializer_class.data)
 
 
 @api_view(['GET',])
 def InvoiceDetail(request, pk):
     if request.method == 'GET':
-        queryset = list(Items.objects.filter(invoice = pk))
-        serializer_class = InvoiceDetailSerializer(instance=queryset, many=True)
+        items_list = Items.objects.filter(invoice = pk)
+        serializer_class = ItemSerializer(instance=items_list, many=True)
         return Response(serializer_class.data)
 
-# class InvoiceList(generics.ListCreateAPIView):
-#     queryset = Invoice.objects.all()
-#     serializer_class = InvoiceSerializer
-
-# class InvoiceDetail(generics.RetrieveUpdateDestroyAPIView):
-#     # queryset = get_queryset(self)
-#     serializer_class = InvoiceSerializer
+@api_view(['GET',])
+def ParticularInvoice(request, pk):
+    if request.method == 'GET':
+        queryset = Invoice.objects.get(invoice_id = pk)
+        serializer_class = InvoiceSerializer(queryset, many=False)
+        return Response(serializer_class.data)
