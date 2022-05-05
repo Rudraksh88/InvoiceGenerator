@@ -47,3 +47,26 @@ class InvoiceDetailSerializer(serializers.ModelSerializer):
             'invoice_id',
             'items'
         ]
+
+class InvoiceCreateSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True)
+
+    class Meta:
+        model = Invoice
+        fields = [
+            'customer_name',
+            'customer_phone',
+            'customer_address',
+            'items'
+        ]
+
+        extra_kwargs = {
+            'invoice_id': {'required': False },
+        }
+
+    def create(self, validated_data):
+        invoice_items = validated_data.pop('items')
+        invoice = Invoice.objects.create(**validated_data)
+        for items in invoice_items:
+            Items.objects.create(invoice = invoice, **items)
+        return invoice

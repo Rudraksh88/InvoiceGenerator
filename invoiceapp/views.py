@@ -1,3 +1,4 @@
+from calendar import setfirstweekday
 from email import generator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -5,7 +6,7 @@ from .models import Invoice, Items
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import InvoiceSerializer, ItemSerializer, InvoiceDetailSerializer, InvoiceListSerializer
+from .serializers import InvoiceSerializer, ItemSerializer, InvoiceListSerializer, InvoiceCreateSerializer
 
 # Create your views here.
 def HomeView(request):
@@ -57,24 +58,29 @@ def InvoiceView(request, pk):
 
     return render(request, 'invoice.html', context)
 
-@api_view(['GET',])
+@api_view(['GET'])
 def InvoiceList(request):
-    if request.method == 'GET':
-        queryset = Invoice.objects.all()
-        serializer_class = InvoiceListSerializer(queryset, many=True)
-        return Response(serializer_class.data)
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceListSerializer(queryset, many=True)
+    return Response(serializer_class.data)
 
-
-@api_view(['GET',])
-def InvoiceDetail(request, pk):
-    if request.method == 'GET':
-        items_list = Items.objects.filter(invoice = pk)
-        serializer_class = ItemSerializer(instance=items_list, many=True)
-        return Response(serializer_class.data)
-
-@api_view(['GET',])
+@api_view(['GET'])
 def ParticularInvoice(request, pk):
-    if request.method == 'GET':
-        queryset = Invoice.objects.get(invoice_id = pk)
-        serializer_class = InvoiceSerializer(queryset, many=False)
-        return Response(serializer_class.data)
+    queryset = Invoice.objects.get(invoice_id = pk)
+    serializer_class = InvoiceSerializer(queryset, many=False)
+    return Response(serializer_class.data)
+
+@api_view(['POST'])
+def CreateInvoice(request):
+    serializer_class = InvoiceCreateSerializer(data = request.data)
+    if serializer_class.is_valid():
+         serializer_class.save()
+    return Response("serializer_class.data")
+
+@api_view(['PUT'])
+def UpdateInvoice(request, pk, name):
+    items = Items.objects.filter(invoice=pk).filter(item_name = name).first()
+    serializer_class = ItemSerializer(instance=items, data = request.data)
+    if serializer_class.is_valid():
+        serializer_class.save()
+    return Response(serializer_class.data)
