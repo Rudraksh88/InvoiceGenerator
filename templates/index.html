@@ -118,8 +118,10 @@
                           <td>
                             {{ invoice.invoice_date }}
                           </td>
-                          {% comment %} {% if %} {% endcomment %}
-                          {% comment %} <td>$ {{ itemstotal | key:invoice.invoice_id }} {% endcomment %}
+                          <td> {% if itemstotal|key:invoice.invoice_id != '-' %}
+							  ${{ itemstotal|key:invoice.invoice_id }}
+							  {% else %} -
+							  {% endif %}
                           </td>
                           
                         </tr>

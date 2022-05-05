@@ -1,8 +1,11 @@
 from email import generator
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import Invoice, Items
 from rest_framework import generics
-from .serializers import InvoiceSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import InvoiceSerializer, ItemSerializer, InvoiceDetailSerializer
 
 # Create your views here.
 def HomeView(request):
@@ -58,10 +61,25 @@ def InvoiceView(request, pk):
     print(context['customer_name'])
     return render(request, 'invoice.html', context)
 
-class InvoiceList(generics.ListCreateAPIView):
-    queryset = Invoice.objects.all()
-    serializer_class = InvoiceSerializer
+@api_view(['GET',])
+def InvoiceList(request):
+    if request.method == 'GET':
+        queryset = Invoice.objects.all()
+        serializer_class = InvoiceSerializer(queryset, many=True)
+        return Response(serializer_class.data)
 
-class InvoiceDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Items.objects.all()
-    serializer_class = InvoiceSerializer
+
+@api_view(['GET',])
+def InvoiceDetail(request, pk):
+    if request.method == 'GET':
+        queryset = list(Items.objects.filter(invoice = pk))
+        serializer_class = InvoiceDetailSerializer(instance=queryset, many=True)
+        return Response(serializer_class.data)
+
+# class InvoiceList(generics.ListCreateAPIView):
+#     queryset = Invoice.objects.all()
+#     serializer_class = InvoiceSerializer
+
+# class InvoiceDetail(generics.RetrieveUpdateDestroyAPIView):
+#     # queryset = get_queryset(self)
+#     serializer_class = InvoiceSerializer

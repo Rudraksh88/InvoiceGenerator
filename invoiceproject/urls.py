@@ -21,6 +21,6 @@ urlpatterns = [
     path('', HomeView),
     path('invoice/<str:pk>', InvoiceView, name='invoice'),
     path('admin/', admin.site.urls),
-    path('api/', InvoiceList.as_view()),
-    path('api/<str:pk>', InvoiceDetail.as_view())
+    path('api/', InvoiceList),
+    path('api/<str:pk>', InvoiceDetail)
 ]
