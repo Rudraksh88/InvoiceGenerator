@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
     'invoiceapp.apps.InvoiceappConfig',
     'rest_framework',
-    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [

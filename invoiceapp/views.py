@@ -64,7 +64,7 @@ def InvoiceList(request):
     return Response(serializer_class.data)
 
 @api_view(['GET'])
-def ParticularInvoice(request, pk):
+def GetInvoice(request, pk):
     queryset = Invoice.objects.get(invoice_id = pk)
     serializer_class = InvoiceSerializer(queryset, many=False)
     return Response(serializer_class.data)
