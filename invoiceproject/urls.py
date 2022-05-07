@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from invoiceapp.views import CreateInvoice, HomeView, InvoiceView, InvoiceList, GetInvoice, UpdateInvoice
+from invoiceapp.views import CreateInvoice, HomeView, InvoiceView, InvoiceList, GetInvoice, UpdateInvoice, CreateInvoiceClass
 
 urlpatterns = [
-    path('', HomeView),
+    path('', HomeView, name='dashboard'),
     path('invoice/<str:pk>', InvoiceView, name='invoice'),
     path('admin/', admin.site.urls),
     path('api/', InvoiceList),
     path('api/get-invoice/<str:pk>/', GetInvoice),
     path('api/create/', CreateInvoice),
     path('api/update/<str:pk>/<str:name>/', UpdateInvoice),
+    path('create-invoice/', CreateInvoiceClass.as_view())
 ]
