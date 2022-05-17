@@ -11,4 +11,4 @@ class InvoiceAdmin(admin.ModelAdmin):
     inlines = [ItemsInline]
 
 admin.site.register(Invoice, InvoiceAdmin)
-# admin.site.register(Items)
+admin.site.register(Items)

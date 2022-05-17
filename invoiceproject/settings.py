@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'invoiceapp.apps.InvoiceappConfig',
     'rest_framework',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

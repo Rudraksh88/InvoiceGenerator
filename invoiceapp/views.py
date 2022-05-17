@@ -1,8 +1,8 @@
 from email import generator
 from multiprocessing import context
 from attr import fields
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from .models import Invoice, Items
 from rest_framework import generics
@@ -12,6 +12,7 @@ from .serializers import InvoiceSerializer, ItemSerializer, InvoiceListSerialize
 from .forms import InvoiceForm, ItemForm, ItemFormSet
 from django.views.generic.edit import CreateView
 from django.db import transaction
+import uuid
 
 
 # Create your views here.
@@ -117,10 +118,38 @@ def UpdateInvoice(request, pk, name):
 #         return super(CreateInvoiceClass, self).form_valid(form)
 
 def CreateInvoiceForm(request):
+    if request.method == 'POST': print(request.POST)
+    print('Item Name List: ')
     item_form = ItemForm(request.POST or None)
     invoice_form = InvoiceForm(request.POST or None)
-    if item_form.is_valid(): item_form.save()
+    itemsList = request.POST.getlist('item_name')
+    quantityList = request.POST.getlist('item_quantity')
+    priceList = request.POST.getlist('item_price')
+    # print(itemsList)
+    # print(quantityList)
+    # print(priceList)
+    # print()
+    listofitems = list()
+    for i in range(0, len(itemsList)):
+        listofitems.append((itemsList[i], quantityList[i], priceList[i]))
+    
+    # print("Invoice ID: " + str(request.POST['invoice_id']))
 
+    if invoice_form.is_valid() and request.method == 'POST':
+        # print(str(request.POST['invoice_id']))
+        Invoice.objects.create(invoice_id = request.POST['invoice_id'], 
+                               customer_name = request.POST['customer_name'],
+                               customer_phone = request.POST['customer_phone'] or None,
+                               customer_address = str(request.POST['customer_address']))
+
+        for items in listofitems:
+            Items.objects.create(invoice = Invoice.objects.get(invoice_id = request.POST['invoice_id']),
+                                item_name = items[0],
+                                item_quantity = items[1],
+                                item_price = items[2])
+        
+        return HttpResponseRedirect(request.path_info)
+        
     context = {
         'item_form': item_form,
         'invoice_form': invoice_form

@@ -1,9 +1,49 @@
 {% extends 'index.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
-<form>
-    {{ invoice_form.as_p }}
-    {{ item_form.as_p }}
+<form method = 'post'> {% csrf_token %}
+    {% comment %} <br>
+    <div>{{invoice_form.as_p}}</div>
+    <br> {% endcomment %}
+    <div>
+        <label class='form-label'>Invoice ID: </label>
+        {{ invoice_form.invoice_id | attr:"readonly:True" }}
+    </div>
+    <div>
+        <label class='form-label'>Customer Name: </label>
+        {{ invoice_form.customer_name }} Customer Phone: {{ invoice_form.customer_phone }} Customer Address: {{ invoice_form.customer_address }}</div><br>
+    <div id='item-form-list'>
+        <div id = 'new-form' class = 'item-form'>
+            Item Name: {{ item_form.item_name }} 
+            Item Quantity: {{ item_form.item_quantity }} 
+            Item Price: {{ item_form.item_price }}
+        </div>
+    </div>
+    <button id = 'add-more' type = 'button'>Add more Items</button>
     <input type="submit" value="Generate Invoice">
 </form>
+
+<script>
+    const addMoreBtn = document.getElementById('add-more')
+    addMoreBtn.addEventListener('click', add_new_form)
+
+    function add_new_form(event) {
+        // console.log(event)
+        if (event) {
+            event.preventDefault()
+        } 
+        // Now add new form element to the html form
+        const formCopyTarget = document.getElementById('item-form-list')
+        const newFormElement = document.getElementById('new-form').cloneNode(true)
+        const newline = document.createElement('br')
+        newFormElement.setAttribute('id', '')
+        newFormElement.setAttribute('class', 'item-form')
+        formCopyTarget.append(newline)
+        formCopyTarget.append(newFormElement)
+    }
+
+</script>
 {% endblock content %}
+
+
