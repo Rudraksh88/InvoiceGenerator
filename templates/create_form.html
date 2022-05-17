@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<form>
+    {{ invoice_form.as_p }}
+    {{ item_form.as_p }}
+    <input type="submit" value="Generate Invoice">
+</form>
+{% endblock content %}

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from invoiceapp.views import CreateInvoice, HomeView, InvoiceView, InvoiceList, GetInvoice, UpdateInvoice, CreateInvoiceClass
+from invoiceapp.views import CreateInvoice, CreateInvoiceForm, HomeView, InvoiceView, InvoiceList, GetInvoice, UpdateInvoice
 
 urlpatterns = [
     path('', HomeView, name='dashboard'),
@@ -25,5 +25,5 @@ urlpatterns = [
     path('api/get-invoice/<str:pk>/', GetInvoice),
     path('api/create/', CreateInvoice),
     path('api/update/<str:pk>/<str:name>/', UpdateInvoice),
-    path('create-invoice/', CreateInvoiceClass.as_view())
+    path('create-invoice/', CreateInvoiceForm)
 ]

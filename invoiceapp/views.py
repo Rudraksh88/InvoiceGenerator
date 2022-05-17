@@ -9,7 +9,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import InvoiceSerializer, ItemSerializer, InvoiceListSerializer, InvoiceCreateSerializer
-from .forms import ItemFormSet
+from .forms import InvoiceForm, ItemForm, ItemFormSet
 from django.views.generic.edit import CreateView
 from django.db import transaction
 
@@ -91,27 +91,38 @@ def UpdateInvoice(request, pk, name):
         serializer_class.save()
     return Response(serializer_class.data)
 
-class CreateInvoiceClass(CreateView):
-    model = Invoice
-    fields = ['customer_name', 'customer_phone', 'customer_address']
-    success_url = reverse_lazy('dashboard')
+# class CreateInvoiceClass(CreateView):
+#     model = Invoice
+#     fields = ['customer_name', 'customer_phone', 'customer_address']
+#     success_url = reverse_lazy('dashboard')
 
-    def get_context_data(self, **kwargs):
-        data = super(CreateInvoiceClass, self).get_context_data(**kwargs)
-        if self.request.POST:
-            data['items'] = ItemFormSet(self.request.POST)
-        else:
-            data['items'] = ItemFormSet()
-        return data
+#     def get_context_data(self, **kwargs):
+#         data = super(CreateInvoiceClass, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             data['items'] = ItemFormSet(self.request.POST)
+#         else:
+#             data['items'] = ItemFormSet()
+#         return data
     
-    def form_valid(self, form):
-        context = self.get_context_data()
-        items = context['items']
-        with transaction.atomic():
-            self.object = form.save()
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         items = context['items']
+#         with transaction.atomic():
+#             self.object = form.save()
 
-        if items.is_valid():
-            items.instance = self.object
-            items.save()
+#         if items.is_valid():
+#             items.instance = self.object
+#             items.save()
         
-        return super(CreateInvoiceClass, self).form_valid(form)
+#         return super(CreateInvoiceClass, self).form_valid(form)
+
+def CreateInvoiceForm(request):
+    item_form = ItemForm(request.POST or None)
+    invoice_form = InvoiceForm(request.POST or None)
+    if item_form.is_valid(): item_form.save()
+
+    context = {
+        'item_form': item_form,
+        'invoice_form': invoice_form
+    }
+    return render(request, 'create_form.html', context)

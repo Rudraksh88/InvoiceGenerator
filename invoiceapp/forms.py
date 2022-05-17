@@ -1,11 +1,11 @@
-from attr import field, fields
+from django import forms
 from django.forms import ModelForm, inlineformset_factory
 from .models import Invoice, Items
 
-# class InvoiceForm(ModelForm):
-#     class Meta:
-#         model = Invoice
-#         fields = '__all__'
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = Invoice
+        fields = '__all__'
 
 class ItemForm(ModelForm):
     class Meta:
