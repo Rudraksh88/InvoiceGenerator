@@ -4,9 +4,6 @@
 {% block content %}
 <h1 style="margin:1% 10% 20px 10%">Generate Invoice</h1>
 <form method = 'post'> {% csrf_token %}
-    {% comment %} <br>
-    <div>{{invoice_form.as_p}}</div>
-    <br> {% endcomment %}
     <div>
         <label class="form-label" style="margin:1% 10% 1% 10%">Invoice ID</label>
         <div style="margin:1% 10% 1% 10%">
