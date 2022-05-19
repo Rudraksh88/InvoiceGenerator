@@ -2,21 +2,82 @@
 {% load widget_tweaks %}
 
 {% block content %}
+<h1 style="margin:1% 10% 20px 10%">Generate Invoice</h1>
 <form method = 'post'> {% csrf_token %}
     {% comment %} <br>
     <div>{{invoice_form.as_p}}</div>
     <br> {% endcomment %}
-    <div>Invoice ID: {{ invoice_form.invoice_id | attr:"readonly:True" }}</div>
-    <div>Customer Name: {{ invoice_form.customer_name }} Customer Phone: {{ invoice_form.customer_phone }} Customer Address: {{ invoice_form.customer_address }}</div><br>
-    <div id='item-form-list'>
-        <div id = 'new-form' class = 'item-form'>
-            Item Name: {{ item_form.item_name }} 
-            Item Quantity: {{ item_form.item_quantity }} 
-            Item Price: {{ item_form.item_price }}
+    <div>
+        <label class="form-label" style="margin:1% 10% 1% 10%">Invoice ID</label>
+        <div style="margin:1% 10% 1% 10%">
+            {% render_field invoice_form.invoice_id class+="form-control" width="100%" style="text-transform: uppercase;" %}
         </div>
     </div>
-    <button id = 'add-more' type = 'button'>Add more Items</button>
-    <input type="submit" value="Generate Invoice">
+    <div style="display: inline-block; margin:1% 5% 1% 10%">
+        <div style="display: inline-block; margin-right:2rem">
+            <label class="form-label" style="margin-right:10px">Customer Name</label>
+            {% render_field invoice_form.customer_name class+="form-control" size="120%" style="size: 100%"%} 
+        </div>
+        
+        <div style="display: inline-block;">
+            <label class="form-label" style="margin-right:10px">Customer Phone</label>
+            {% render_field invoice_form.customer_phone class+="form-control" size="30" %} 
+        </div>
+
+        <div style="margin-top:1rem">
+            <label class="form-label" style="margin-right:10px">Customer Address</label>
+            {% render_field invoice_form.customer_address class+="form-control" %}
+        </div>
+    </div>
+
+    <div style="margin:1% 10% 1% 10%">
+        <h2>Items</h2>
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray;margin-bottom:1rem; margin-top:1rem">
+    </div>
+    <div id='item-form-list' style="margin:1rem 1rem 1rem 10%;">
+        <div id = 'new-form' class = 'item-form'>
+            <div style="display: inline-block;">
+                <label for="item-name" class="form-label" style="text-align:right;clear:both;float:left;margin-right:15px">Item Name</label>
+                {% render_field item_form.item_name class+="form-control" size="55" id="item-name" %}
+            </div>
+            <div style="display: inline-block;margin-left:1rem">
+                <label for="item-name" class="form-label" style="text-align:right;clear:both;float:left;margin-right:15px">Item Quantity</label>
+                {% render_field item_form.item_quantity class+="form-control" size="10" %} 
+            </div>
+            <div style="display: inline-block;margin-left:1rem">
+                <label for="item-name" class="form-label" style="text-align:right;clear:both;float:left;margin-right:15px">Item Price</label>
+                {% render_field item_form.item_price class+="form-control" size="20" %}
+            </div>
+        </div>
+    </div>
+    
+    <hr style="margin:1% 10% 1% 10%;height:2px;border-width:0;color:gray;background-color:gray;">
+    <div id='buttons' style="margin:1% 10% 1% 10%">
+        <div style="display: inline-block;margin-right:1%">
+            <button id = 'add-more' type = 'button' class="btn btn-outline-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <desc>Download more icon variants from https://tabler-icons.io/i/plus</desc>
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                 </svg>
+                Add more Items
+            </button>
+        </div>
+        <div style="display: inline-block;">
+            <button type="submit" class="btn btn-dark"> {% csrf_token %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <desc>Download more icon variants from https://tabler-icons.io/i/file-plus</desc>
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                    <line x1="12" y1="11" x2="12" y2="17"></line>
+                    <line x1="9" y1="14" x2="15" y2="14"></line>
+                </svg>
+                Generate Invoice
+            </button>
+        </div>
+    </div>
 </form>
 
 <script>

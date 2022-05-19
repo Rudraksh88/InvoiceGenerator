@@ -25,5 +25,5 @@ urlpatterns = [
     path('api/get-invoice/<str:pk>/', GetInvoice),
     path('api/create/', CreateInvoice),
     path('api/update/<str:pk>/<str:name>/', UpdateInvoice),
-    path('create-invoice/', CreateInvoiceForm)
+    path('create-invoice/', CreateInvoiceForm, name='create-invoice')
 ]
